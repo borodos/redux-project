@@ -1,17 +1,40 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux/es/exports";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// -- State (состояние) - это объект, массив или примитивное значение.
+const defaultState = {
+	cash: 5,
+};
+
+// -- Action - это JS объект, у которого должно быть поле type, по которому определяется, как должно изменяться состояние
+// const action = { type: "", payload: "?" };
+
+// -- Редьюсер - это чистая JS функция, которая отвечает за обновление состояния.
+// -- Принимает два аргумента: state - значение текущего состояния, action - объект события
+const reducer = (state = defaultState, action) => {
+	switch (action.type) {
+		case "ADD_CASH":
+			// -- Изначально, состояние в Redux является неизменяемым, поэтоу каждый раз нужно возвращать новый объект
+			return { ...state, cash: state.cash + action.payload };
+		case "GET_CASH":
+			return { ...state, cash: state.cash - action.payload };
+
+		default:
+			return state;
+	}
+};
+
+const store = configureStore({ reducer: reducer });
+console.log(store.getState());
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+	<React.StrictMode>
+		<Provider store={store}>
+			<App />
+		</Provider>
+	</React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
