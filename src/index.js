@@ -3,32 +3,7 @@ import { Provider } from "react-redux/es/exports";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-
-// -- State (состояние) - это объект, массив или примитивное значение.
-const defaultState = {
-	cash: 5,
-};
-
-// -- Action - это JS объект, у которого должно быть поле type, по которому определяется, как должно изменяться состояние
-// const action = { type: "", payload: "?" };
-
-// -- Редьюсер - это чистая JS функция, которая отвечает за обновление состояния.
-// -- Принимает два аргумента: state - значение текущего состояния, action - объект события
-const reducer = (state = defaultState, action) => {
-	switch (action.type) {
-		case "ADD_CASH":
-			// -- Изначально, состояние в Redux является неизменяемым, поэтоу каждый раз нужно возвращать новый объект
-			return { ...state, cash: state.cash + action.payload };
-		case "GET_CASH":
-			return { ...state, cash: state.cash - action.payload };
-
-		default:
-			return state;
-	}
-};
-
-const store = configureStore({ reducer: reducer });
-console.log(store.getState());
+import { store } from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
